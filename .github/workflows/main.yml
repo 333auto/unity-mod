@@ -1,0 +1,21 @@
+name: Build Unity Mod Manager
+on:
+  workflow_dispatch: #允许手动触发
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+     - uses: actions/checkout@v4
+     - name: Setup .NET
+       uses: actions/setup-dotnet@v4
+       with:
+          dotnet-version: 8.0.x
+     - name: Restore dependencies
+       run: dotnet restore
+     - name: Build Console project for Windows
+       run: dotnet build Console/Console.csproj -c Release --no-restore
+     - name: Upload windows build
+       uses: actions/upload-artifact@v4
+       with:
+         name: UnityModManager-Console-Windows
+         path: Console/bin/Release/net8.0/
